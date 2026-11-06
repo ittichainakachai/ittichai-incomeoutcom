@@ -373,9 +373,9 @@ export default function App() {
           {/* Zone 1: Brand wordmark */}
           <a
             href="#top"
-            className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0"
+            className="text-[21px] font-bold italic tracking-tight text-[#1c8218] whitespace-nowrap shrink-0"
           >
-            คลังบัญชี
+            คลังบัญชีครอบครัว
           </a>
 
           {/* Zone 2: Concise single-line navigation links */}
