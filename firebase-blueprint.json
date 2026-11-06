@@ -1,0 +1,184 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private user profile and currency preferences for authenticated Gmail users.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the user",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name from Google account",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User Gmail address",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Google profile avatar URL",
+          "maxLength": 500
+        },
+        "currency": {
+          "type": "string",
+          "description": "Preferred display currency code",
+          "enum": ["THB", "USD", "EUR", "JPY"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when profile was last updated"
+        }
+      },
+      "required": ["uid", "displayName", "email", "currency", "createdAt", "updatedAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "An individual income or expense record owned by a user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "type": {
+          "type": "string",
+          "description": "Transaction direction",
+          "enum": ["income", "expense"]
+        },
+        "amount": {
+          "type": "number",
+          "description": "Positive monetary amount"
+        },
+        "category": {
+          "type": "string",
+          "description": "Transaction category name",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "title": {
+          "type": "string",
+          "description": "Short title or description of the transaction",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional detailed note",
+          "maxLength": 300
+        },
+        "date": {
+          "type": "string",
+          "description": "Transaction date in YYYY-MM-DD format",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "monthKey": {
+          "type": "string",
+          "description": "Year-month key in YYYY-MM format for monthly aggregation",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^[0-9]{4}-[0-9]{2}$"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Payment channel used",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when record was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when record was last updated"
+        }
+      },
+      "required": [
+        "userId",
+        "type",
+        "amount",
+        "category",
+        "title",
+        "date",
+        "monthKey",
+        "paymentMethod",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "MonthlyBudget": {
+      "title": "MonthlyBudget",
+      "description": "Monthly expense budget target set by a user for a specific YYYY-MM month.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner Firebase Auth UID",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "monthKey": {
+          "type": "string",
+          "description": "Year-month key in YYYY-MM format",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^[0-9]{4}-[0-9]{2}$"
+        },
+        "limitAmount": {
+          "type": "number",
+          "description": "Monthly spending limit"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when budget was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when budget was last updated"
+        }
+      },
+      "required": ["userId", "monthKey", "limitAmount", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile documents keyed by Firebase Auth UID."
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "User income and expense ledger entries."
+    },
+    "/budgets/{budgetId}": {
+      "schema": { "$ref": "#/entities/MonthlyBudget" },
+      "description": "Monthly expense budget targets per user and month."
+    }
+  }
+}

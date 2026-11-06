@@ -1,0 +1,6 @@
+{
+  "name": "คลังบัญชี — จัดการรายรับรายจ่าย",
+  "description": "เว็บแอปพลิเคชันจัดการรายรับรายจ่ายส่วนตัว พร้อมสรุปรายเดือน กราฟวิเคราะห์ข้อมูล และเชื่อมต่อ Firebase",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
